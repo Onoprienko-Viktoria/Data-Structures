@@ -17,7 +17,9 @@ public interface List {
 
     boolean isEmpty();
 
-    boolean contains(Object value);
+    default boolean contains(Object value){
+        return indexOf(value)>=0;
+    }
 
     int indexOf(Object value);
 

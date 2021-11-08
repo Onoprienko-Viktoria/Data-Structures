@@ -122,10 +122,7 @@ public class LinkedList implements List{
         return size==0;
     }
 
-    @Override
-    public boolean contains(Object value) {
-        return indexOf(value)>=0;
-    }
+
 
     @Override
     public int indexOf(Object value) {
@@ -174,4 +171,13 @@ public class LinkedList implements List{
         return result.toString();
     }
 
+    private class Node {
+        Node next;
+        Node prev;
+        Object value;
+
+        public Node(Object value) {
+            this.value = value;
+        }
+    }
 }

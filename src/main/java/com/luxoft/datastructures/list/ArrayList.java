@@ -99,10 +99,7 @@ public class ArrayList implements List {
         return size == 0;
     }
 
-    @Override
-    public boolean contains(Object value) {
-        return indexOf(value)>=0;
-    }
+
 
     @Override
     public int indexOf(Object value) {
