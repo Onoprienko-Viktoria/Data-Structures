@@ -21,17 +21,13 @@ public class ArrayList implements List {
 
     @Override
     public void add(Object value) {
-        ensureCapacity();
-        array[size] = value;
-        size++;
+        add(value,size);
     }
 
     @Override
     public void add(Object value, int index) {
         ensureCapacity();
-        if (index > size || index < 0){
-            throw new IndexOutOfBoundsException("Index out of List");
-        }
+        checkIndexOutOfBoundsWithSize(index,size);
         Object[] cloneArray = new Object[array.length];
         for (int i = 0; i<cloneArray.length; i++){
             cloneArray[i] = array[i];
@@ -45,9 +41,7 @@ public class ArrayList implements List {
 
     @Override
     public Object remove(int index) {
-        if (index > size-1 || index < 0){
-            throw new IndexOutOfBoundsException("Index out of List");
-        }
+        checkIndexOutOfBoundsWithSizeMinusOne(index,size);
         Object deletedValue = array[index];
         for (int i = index; i < size-1; i++) {
             if (i == (size - 1)) {
@@ -64,17 +58,13 @@ public class ArrayList implements List {
 
     @Override
     public Object get(int index) {
-        if (index > size-1 || index < 0){
-            throw new IndexOutOfBoundsException("Index out of List");
-        }
+        checkIndexOutOfBoundsWithSizeMinusOne(index,size);
         return array[index];
     }
 
     @Override
     public Object set(Object value, int index) {
-        if (index > size-1 || index < 0){
-            throw new IndexOutOfBoundsException("Index out of List");
-        }
+        checkIndexOutOfBoundsWithSizeMinusOne(index,size);
         Object oldValue = array[index];
         array[index]= value;
         return oldValue;
@@ -103,9 +93,7 @@ public class ArrayList implements List {
 
     @Override
     public int indexOf(Object value) {
-        if (isEmpty() ) {
-            throw new IllegalStateException("List is empty!");
-        }
+        checkIsEmptyThenThrowException();
 
         for(int i = 0; i < size-1 ; i++) {
             if(Objects.equals(value,array[i])) {
@@ -117,9 +105,8 @@ public class ArrayList implements List {
 
     @Override
     public int lastIndexOf(Object value) {
-        if (isEmpty() ) {
-            throw new IllegalStateException("List is empty!");
-        }
+        checkIsEmptyThenThrowException();
+
         for(int i = size-1; i >= 0; i --) {
             if(Objects.equals(value,array[i])) {
                 return i;

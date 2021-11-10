@@ -1,11 +1,12 @@
 package com.luxoft.datastructures.list;
 
 import java.util.Objects;
+import java.util.Random;
 
 public class LinkedList implements List{
-    Node head;
-    Node tail;
-    int size;
+    private Node head;
+    private Node tail;
+    private int size;
 
     @Override
     public void add(Object value) {
@@ -14,9 +15,8 @@ public class LinkedList implements List{
 
     @Override
     public void add(Object value, int index) {
-        if (index > size || index < 0){
-            throw new IndexOutOfBoundsException("Index out of List");
-        }
+        checkIndexOutOfBoundsWithSize(index,size);
+
         Node newNode = new Node(value);
         if(size==0){
             head = tail = newNode;
@@ -38,10 +38,8 @@ public class LinkedList implements List{
 
     @Override
     public Object remove(int index) {
-        if (index > size-1 || index < 0){
-            throw new IndexOutOfBoundsException("Index out of List");
-        }
-
+        checkIndexOutOfBoundsWithSizeMinusOne(index,size);
+        checkIsEmptyThenThrowException();
         Node currentNode = head;
         Node nextNode = head.next;
         Node prevNode = null;
@@ -77,9 +75,8 @@ public class LinkedList implements List{
 
 
     private Node getNode(int index) {
-        if (index > size - 1 || index < 0) {
-            throw new IndexOutOfBoundsException("Index out of List");
-        }
+        checkIndexOutOfBoundsWithSizeMinusOne(index,size);
+
         Node current = head;
         for (int i = 0; i < index; i++) {
             current = current.next;
@@ -89,17 +86,15 @@ public class LinkedList implements List{
 
     @Override
     public Object get(int index) {
-        if (index > size || index < 0){
-            throw new IndexOutOfBoundsException("Index out of List");
-        }
+        checkIndexOutOfBoundsWithSize(index,size);
+
         return getNode(index).value;
     }
 
     @Override
     public Object set(Object value, int index) {
-        if (index > size || index < 0){
-            throw new IndexOutOfBoundsException("Index out of List");
-        }
+        checkIndexOutOfBoundsWithSize(index,size);
+
         Node newNode =getNode(index);
         Node oldNode = newNode;
         newNode.value = value;
@@ -126,9 +121,7 @@ public class LinkedList implements List{
 
     @Override
     public int indexOf(Object value) {
-        if (isEmpty() ) {
-            throw new IllegalStateException("List is empty!");
-        }
+        checkIsEmptyThenThrowException();
         Node current = head;
         for (int i = 0; i < size-1; i++) {
             if(Objects.equals(current.value, value)){
@@ -141,9 +134,7 @@ public class LinkedList implements List{
 
     @Override
     public int lastIndexOf(Object value) {
-        if (isEmpty() ) {
-            throw new IllegalStateException("List is empty!");
-        }
+        checkIsEmptyThenThrowException();
         Node current = tail;
         for (int i = size-1; i >=0; i++) {
             if(Objects.equals(current.value, value)){
@@ -180,4 +171,5 @@ public class LinkedList implements List{
             this.value = value;
         }
     }
+
 }
