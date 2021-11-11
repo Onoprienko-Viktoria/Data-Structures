@@ -2,9 +2,10 @@ package com.luxoft.datastructures.list;
 
 import com.luxoft.datastructures.list.List;
 
+import java.util.Iterator;
 import java.util.Objects;
 
-public class ArrayList implements List {
+public class ArrayList implements List, Iterable {
     private static  final int DEFAULT_INITIAL_CAPACITY = 10;
     private int size;
     private int index = 0;
@@ -26,11 +27,13 @@ public class ArrayList implements List {
 
     @Override
     public void add(Object value, int index) {
+        Iterator iterator = iterator();
+        int count = 0;
         ensureCapacity();
         checkIndexOutOfBoundsWithSize(index,size);
         Object[] cloneArray = new Object[array.length];
-        for (int i = 0; i<cloneArray.length; i++){
-            cloneArray[i] = array[i];
+        while (iterator.hasNext()){
+            cloneArray[count++] = iterator.next();
         }
         array[index]=value;
         for (int i = index+1; i<array.length; i++){
@@ -72,8 +75,8 @@ public class ArrayList implements List {
 
     @Override
     public void clear() {
-        for(int i=0; i < array.length; i++){
-            array[i]=null;
+        for (Object arrayObject : array) {
+            arrayObject=null;
         }
         size=0;
 
@@ -117,10 +120,11 @@ public class ArrayList implements List {
 
     @Override
     public String toString() {
+        Iterator iterator = iterator();
         StringBuilder result = new StringBuilder();
         result.append("[");
-        for (int i = 0; i < size; i++) {
-            result.append(array[i]);
+        while (iterator.hasNext()){
+            result.append(iterator.next());
             result.append(", ");
         }
         result.append("]");
@@ -137,4 +141,26 @@ public class ArrayList implements List {
             array = newArray;
         }
     }
+
+    @Override
+    public Iterator iterator() {
+        return new ArrayListIterator();
+    }
+
+
+    private class ArrayListIterator implements Iterator {
+        private int index=0;
+        @Override
+        public boolean hasNext() {
+            return index < size;
+        }
+
+        @Override
+        public Object next() {
+            Object value = array[index];
+            index++;
+            return value;
+        }
+    }
+
 }

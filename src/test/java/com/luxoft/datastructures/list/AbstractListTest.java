@@ -8,11 +8,11 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public abstract class AbstractListTest {
-    private List list;
+    private List arrayList;
 
     @BeforeEach
     public void  before(){
-        list= getList();
+        arrayList = getList();
     }
 
     protected abstract List getList();
@@ -21,222 +21,204 @@ public abstract class AbstractListTest {
     @Test
     public void testAddAndRemoveByLastIndexAndGetWorkCorrectly(){
 
-        list.add("A");
-        list.add("B");
-        list.add("C");
-        list.add("D",2);
-        assertEquals(4,list.size());
-        assertEquals("A", list.get(0));
-        assertEquals("B", list.get(1));
-        assertEquals("C", list.get(3));
-        assertEquals("D", list.get(2));
-        assertEquals("C", list.remove(3));
-        assertEquals("D", list.get(2));
-        assertEquals(3, list.size());
+        arrayList.add("A");
+        arrayList.add("B");
+        arrayList.add("C");
+        arrayList.add("D",2);
+        assertEquals(4, arrayList.size());
+        assertEquals("A", arrayList.get(0));
+        assertEquals("B", arrayList.get(1));
+        assertEquals("C", arrayList.get(3));
+        assertEquals("D", arrayList.get(2));
+        assertEquals("C", arrayList.remove(3));
+        assertEquals(3, arrayList.size());
     }
 
     @Test
     public void testAddAndRemoveByZeroIndexAndGetWorkCorrectly(){
 
-        list.add("A");
-        list.add("B");
-        list.add("C");
-        list.add("D",0);
-        assertEquals(4,list.size());
-        assertEquals("D", list.get(0));
-        assertEquals("A", list.get(1));
-        assertEquals("C", list.get(3));
-        assertEquals("B", list.get(2));
-        assertEquals("D", list.remove(0));
-        assertEquals("A", list.get(0));
-        assertEquals(3, list.size());
+        arrayList.add("A");
+        arrayList.add("B");
+        arrayList.add("C");
+        arrayList.add("D",0);
+        assertEquals(4, arrayList.size());
+        assertEquals("D", arrayList.get(0));
+        assertEquals("A", arrayList.get(1));
+        assertEquals("C", arrayList.get(3));
+        assertEquals("B", arrayList.get(2));
+        assertEquals("D", arrayList.remove(0));
+        assertEquals("A", arrayList.get(0));
+        assertEquals(3, arrayList.size());
     }
 
     @Test
     public void testAddAndRemoveByMiddleIndexAndGetWorkCorrectly(){
 
-        list.add("A");
-        list.add("B");
-        list.add("C");
-        list.add("D",1);
-        assertEquals(4,list.size());
-        assertEquals("A", list.get(0));
-        assertEquals("D", list.get(1));
-        assertEquals("C", list.get(3));
-        assertEquals("B", list.get(2));
-        assertEquals("D", list.remove(1));
-        assertEquals("B", list.get(1));
-        assertEquals(3, list.size());
+        arrayList.add("A");
+        arrayList.add("B");
+        arrayList.add("C");
+        arrayList.add("D",1);
+        assertEquals(4, arrayList.size());
+        assertEquals("A", arrayList.get(0));
+        assertEquals("D", arrayList.get(1));
+        assertEquals("C", arrayList.get(3));
+        assertEquals("B", arrayList.get(2));
+        assertEquals("D", arrayList.remove(1));
+        assertEquals("B", arrayList.get(1));
+        assertEquals(3, arrayList.size());
     }
 
     @Test
     public void testIsEmptyReturnTrueOnNewList() {
-        assertTrue(list.isEmpty());
+        assertTrue(arrayList.isEmpty());
     }
 
     @Test
     public void testIsEmptyReturnFalseOnListWithData() {
-        list.add("O");
-        assertFalse(list.isEmpty());
+        arrayList.add("O");
+        assertFalse(arrayList.isEmpty());
     }
 
     @Test
     public void testIsEmptyReturnTrueOnListAfterClear() {
         
-        list.add("O");
-        list.add("I");
-        list.add("O");
-        list.clear();
-        assertTrue(list.isEmpty());
+        arrayList.add("O");
+        arrayList.add("I");
+        arrayList.add("O");
+        arrayList.clear();
+        assertTrue(arrayList.isEmpty());
     }
 
     @Test
     public void testContainsReturnTrue() {
         
-        list.add("T");
-        list.add("O");
-        list.add("R");
+        arrayList.add("T");
+        arrayList.add("O");
+        arrayList.add("R");
 
-        assertTrue(list.contains("O"));
+        assertTrue(arrayList.contains("O"));
     }
 
     @Test
     public void testContainsReturnFalse() {
         
-        list.add("T");
-        list.add("O");
-        list.add("R");
+        arrayList.add("T");
+        arrayList.add("O");
+        arrayList.add("R");
 
-        assertFalse(list.contains("p"));
+        assertFalse(arrayList.contains("p"));
     }
 
     @Test
     public void testContainsNull() {
 
-        list.add("A");
-        list.add(null);
-        list.add("A");
+        arrayList.add("A");
+        arrayList.add(null);
+        arrayList.add("A");
 
-        assertTrue(list.contains(null));
-        list.set("D", 1);
-        assertFalse(list.contains(null));
+        assertTrue(arrayList.contains(null));
+        arrayList.set("D", 1);
+        assertFalse(arrayList.contains(null));
     }
 
 
     @Test
     public void testLastIndexOfAndIndexOfWorkCorrectly() {
         
-        list.add("T");
-        list.add("O");
-        list.add("R");
-        list.add("O");
+        arrayList.add("T");
+        arrayList.add("O");
+        arrayList.add("R");
+        arrayList.add("O");
 
-        assertEquals(1, list.indexOf("O"));
-        assertEquals(3, list.lastIndexOf("O"));
+        assertEquals(1, arrayList.indexOf("O"));
+        assertEquals(3, arrayList.lastIndexOf("O"));
     }
 
     @Test
     public void testLastIndexOfAndIndexOfNullWorkCorrectly() {
 
-        list.add("T");
-        list.add(null);
-        list.add("R");
-        list.add(null);
+        arrayList.add("T");
+        arrayList.add(null);
+        arrayList.add("R");
+        arrayList.add(null);
 
-        assertEquals(1, list.indexOf(null));
-        assertEquals(3, list.lastIndexOf(null));
+        assertEquals(1, arrayList.indexOf(null));
+        assertEquals(3, arrayList.lastIndexOf(null));
     }
 
     @Test
     public void testLastIndexOfAndIndexOfReturnsMinusOne() {
 
-        list.add("A");
-        list.add("B");
-        list.add("C");
-        assertEquals(-1, list.indexOf("T"));
-        assertEquals(-1, list.lastIndexOf("T"));
+        arrayList.add("A");
+        arrayList.add("B");
+        arrayList.add("C");
+        assertEquals(-1, arrayList.indexOf("T"));
+        assertEquals(-1, arrayList.lastIndexOf("T"));
     }
 
     @Test
     public void testGetAndSetWorkCorrectly() {
         
-        list.add("T");
-        list.add("O");
-        list.add("R");
-        list.add("O");
+        arrayList.add("T");
+        arrayList.add("O");
+        arrayList.add("R");
+        arrayList.add("O");
 
-        assertEquals("O", list.get(1));
-        list.set("H", 1);
-        assertEquals("H", list.get(1));
+        assertEquals("O", arrayList.get(1));
+        arrayList.set("H", 1);
+        assertEquals("H", arrayList.get(1));
     }
 
     @Test
     public void testGetAndSetWorkWithNullCorrectly() {
 
-        list.add("T");
-        list.add(null);
-        list.add("R");
-        list.add("O");
+        arrayList.add("T");
+        arrayList.add(null);
+        arrayList.add("R");
+        arrayList.add("O");
 
-        assertEquals(null, list.get(1));
-        list.set(null, 2);
-        assertEquals(null, list.get(2));
+        assertEquals(null, arrayList.get(1));
+        arrayList.set(null, 2);
+        assertEquals(null, arrayList.get(2));
     }
 
 
 
     @Test
     public void testPushOverInitialCapacityAndRemoveWorkCorrectlyAndChangeSize() {
-        list.add("A");
-        list.add("B");
-        list.add("C");
+        arrayList.add("A");
+        arrayList.add("B");
+        arrayList.add("C");
 
-        assertEquals(3, list.size());
-        assertEquals("C", list.remove(2));
-        assertEquals("B", list.remove(1));
-        assertEquals("A", list.remove(0));
+        assertEquals(3, arrayList.size());
+        assertEquals("C", arrayList.remove(2));
+        assertEquals("B", arrayList.remove(1));
+        assertEquals("A", arrayList.remove(0));
 
-        assertEquals(0, list.size());
-        assertTrue(list.isEmpty());
+        assertEquals(0, arrayList.size());
+        assertTrue(arrayList.isEmpty());
     }
 
-    @Test
-    public void testEnsureCapacity() {
 
-        list.add("A");
-        list.add("A");
-        list.add("A");
-        list.add("A");
-        list.add("A");
-        list.add("A");
-        list.add("A");
-        list.add("A");
-        list.add("A");
-        list.add("A");
-        list.add("A");
-        list.add("A");
-        assertEquals(12, list.size());
-
-    }
 
     @Test
     public void testIndexOutOfBoundsExceptionOnGetAndSetAndAddAndRemove() {
         
-        list.add("A");
-        list.add("A");
-        list.add("A");
+        arrayList.add("A");
+        arrayList.add("A");
+        arrayList.add("A");
 
         Assertions.assertThrows(IndexOutOfBoundsException.class, () -> {
-            list.get(3);
+            arrayList.get(3);
         });
         Assertions.assertThrows(IndexOutOfBoundsException.class, () -> {
-            list.set("S", -2);
+            arrayList.set("S", -2);
         });
         Assertions.assertThrows(IndexOutOfBoundsException.class, () -> {
-            list.add("S", 4);
+            arrayList.add("S", 4);
         });
         Assertions.assertThrows(IndexOutOfBoundsException.class, () -> {
-            list.remove(-1);
+            arrayList.remove(-1);
         });
     }
 
@@ -244,10 +226,10 @@ public abstract class AbstractListTest {
     public void testIllegalStateExceptionOnLastIndexOfAndIndexOf() {
 
         Assertions.assertThrows(IllegalStateException.class, () -> {
-            list.indexOf(0);
+            arrayList.indexOf(0);
         });
         Assertions.assertThrows(IllegalStateException.class, () -> {
-            list.lastIndexOf(0);
+            arrayList.lastIndexOf(0);
         });
     }
 
@@ -257,13 +239,15 @@ public abstract class AbstractListTest {
     @Test
     public void testToString() {
         
-        list.add("A");
-        list.add("A");
-        list.add("A");
-        String received = list.toString();
+        arrayList.add("A");
+        arrayList.add("A");
+        arrayList.add("A");
+        String received = arrayList.toString();
 
         assertEquals("[A, A, A, ]", received);
     }
+
+
 
 
 }
