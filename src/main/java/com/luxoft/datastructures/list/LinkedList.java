@@ -60,7 +60,12 @@ public class LinkedList implements List, Iterable {
                 return currentNode.value;
             }
             if (index == size-1) {
-                tail = tail.prev;
+                Node deleted = getNode(size-1);
+                prevNode = getNode(size-2);
+                prevNode.next = null;
+                tail = prevNode;
+                size--;
+                return deleted.value;
             }
             if (size == 1) {
                 head = tail = null;
@@ -78,13 +83,13 @@ public class LinkedList implements List, Iterable {
     private Node getNode(int index) {
         checkIndexOutOfBoundsWithSizeMinusOne(index, size);
 
-        Node current = head;
+        Node currentFromHead = head;
         Node currentFromTail = tail;
         if (index <= size / 2) {
             for (int i = 0; i < index; i++) {
-                current = current.next;
+                currentFromHead = currentFromHead.next;
             }
-            return current;
+            return currentFromHead;
         } else {
             for (int i = size-1; i > index; i--) {
                 currentFromTail = currentFromTail.prev;

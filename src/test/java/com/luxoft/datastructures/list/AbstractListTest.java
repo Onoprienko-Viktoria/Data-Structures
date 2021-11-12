@@ -31,6 +31,7 @@ public abstract class AbstractListTest {
         assertEquals("C", arrayList.get(3));
         assertEquals("D", arrayList.get(2));
         assertEquals("C", arrayList.remove(3));
+        assertEquals("D", arrayList.get(2));
         assertEquals(3, arrayList.size());
     }
 
