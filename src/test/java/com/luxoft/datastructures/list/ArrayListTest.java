@@ -29,4 +29,20 @@ public class ArrayListTest extends AbstractListTest {
         arrayList.add("A");
         assertEquals(12, arrayList.size());
     }
+
+    @Test
+    public void testPushOverInitialCapacityAndRemoveWorkCorrectlyAndChangeSize() {
+        ArrayList arrayList = new ArrayList();
+        arrayList.add("A");
+        arrayList.add("B");
+        arrayList.add("C");
+
+        assertEquals(3, arrayList.size());
+        assertEquals("C", arrayList.remove(2));
+        assertEquals("B", arrayList.remove(1));
+        assertEquals("A", arrayList.remove(0));
+
+        assertEquals(0, arrayList.size());
+        assertTrue(arrayList.isEmpty());
+    }
 }
