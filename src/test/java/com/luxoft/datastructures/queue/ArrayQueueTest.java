@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class ArrayQueueTest {
     @Test
-    public void TestDequeueAndEnqueueAndChangeSize(){
+    public void TestDequeueAndEnqueueAndChangeSize() {
         ArrayQueue arrayQueue = new ArrayQueue();
         arrayQueue.enqueue("A");
         arrayQueue.enqueue("B");
@@ -18,8 +18,9 @@ public class ArrayQueueTest {
         assertEquals(1, arrayQueue.size());
         assertFalse(arrayQueue.isEmpty());
     }
+
     @Test
-    public void TestDequeueAndPeek(){
+    public void TestDequeueAndPeek() {
         ArrayQueue arrayQueue = new ArrayQueue();
         arrayQueue.enqueue("A");
         arrayQueue.enqueue("B");
@@ -30,6 +31,7 @@ public class ArrayQueueTest {
         assertEquals("A", arrayQueue.peek());
         assertEquals(3, arrayQueue.size());
     }
+
     @Test
     public void testIsEmptyReturnTrueOnNewQueue() {
         ArrayQueue arrayQueue = new ArrayQueue();
@@ -63,6 +65,7 @@ public class ArrayQueueTest {
 
         assertTrue(arrayQueue.contains("O"));
     }
+
     @Test
     public void testContainsReturnFalse() {
         ArrayQueue arrayQueue = new ArrayQueue();
@@ -81,10 +84,8 @@ public class ArrayQueueTest {
     }
 
 
-
-
     @Test
-    public void testString(){
+    public void testString() {
         ArrayQueue arrayQueue = new ArrayQueue();
         arrayQueue.enqueue("B");
         arrayQueue.enqueue("O");

@@ -11,7 +11,7 @@ public abstract class AbstractListTest {
     private List list;
 
     @BeforeEach
-    public void  before(){
+    public void before() {
         list = getList();
     }
 
@@ -19,12 +19,12 @@ public abstract class AbstractListTest {
 
 
     @Test
-    public void testAddAndRemoveByLastIndexAndGetWorkCorrectly(){
+    public void testAddAndRemoveByLastIndexAndGetWorkCorrectly() {
 
         list.add("A");
         list.add("B");
         list.add("C");
-        list.add("D",2);
+        list.add("D", 2);
         assertEquals(4, list.size());
         assertEquals("A", list.get(0));
         assertEquals("B", list.get(1));
@@ -36,12 +36,12 @@ public abstract class AbstractListTest {
     }
 
     @Test
-    public void testAddAndRemoveByZeroIndexAndGetWorkCorrectly(){
+    public void testAddAndRemoveByZeroIndexAndGetWorkCorrectly() {
 
         list.add("A");
         list.add("B");
         list.add("C");
-        list.add("D",0);
+        list.add("D", 0);
         assertEquals(4, list.size());
         assertEquals("D", list.get(0));
         assertEquals("A", list.get(1));
@@ -53,12 +53,12 @@ public abstract class AbstractListTest {
     }
 
     @Test
-    public void testAddAndRemoveByMiddleIndexAndGetWorkCorrectly(){
+    public void testAddAndRemoveByMiddleIndexAndGetWorkCorrectly() {
 
         list.add("A");
         list.add("B");
         list.add("C");
-        list.add("D",1);
+        list.add("D", 1);
         assertEquals(4, list.size());
         assertEquals("A", list.get(0));
         assertEquals("D", list.get(1));
@@ -82,7 +82,7 @@ public abstract class AbstractListTest {
 
     @Test
     public void testIsEmptyReturnTrueOnListAfterClear() {
-        
+
         list.add("O");
         list.add("I");
         list.add("O");
@@ -92,7 +92,7 @@ public abstract class AbstractListTest {
 
     @Test
     public void testContainsReturnTrue() {
-        
+
         list.add("T");
         list.add("O");
         list.add("R");
@@ -102,7 +102,7 @@ public abstract class AbstractListTest {
 
     @Test
     public void testContainsReturnFalse() {
-        
+
         list.add("T");
         list.add("O");
         list.add("R");
@@ -125,7 +125,7 @@ public abstract class AbstractListTest {
 
     @Test
     public void testLastIndexOfAndIndexOfWorkCorrectly() {
-        
+
         list.add("T");
         list.add("O");
         list.add("R");
@@ -159,7 +159,7 @@ public abstract class AbstractListTest {
 
     @Test
     public void testGetAndSetWorkCorrectly() {
-        
+
         list.add("T");
         list.add("O");
         list.add("R");
@@ -186,7 +186,7 @@ public abstract class AbstractListTest {
 
     @Test
     public void testIndexOutOfBoundsExceptionOnGetAndSetAndAddAndRemove() {
-        
+
         list.add("A");
         list.add("A");
         list.add("A");
@@ -217,11 +217,9 @@ public abstract class AbstractListTest {
     }
 
 
-
-
     @Test
     public void testToString() {
-        
+
         list.add("A");
         list.add("A");
         list.add("A");
@@ -229,8 +227,6 @@ public abstract class AbstractListTest {
 
         assertEquals("[A, A, A, ]", received);
     }
-
-
 
 
 }

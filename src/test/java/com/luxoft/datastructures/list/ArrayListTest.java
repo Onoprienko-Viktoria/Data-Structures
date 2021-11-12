@@ -45,4 +45,5 @@ public class ArrayListTest extends AbstractListTest {
         assertEquals(0, arrayList.size());
         assertTrue(arrayList.isEmpty());
     }
+
 }

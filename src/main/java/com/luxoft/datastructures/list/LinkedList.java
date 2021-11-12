@@ -2,23 +2,23 @@ package com.luxoft.datastructures.list;
 
 import java.util.Iterator;
 import java.util.Objects;
-import java.util.Random;
 
-public class LinkedList implements List, Iterable {
-    private Node head;
-    private Node tail;
+
+public class LinkedList<T> implements List<T>, Iterable {
+    private Node<T> head;
+    private Node<T> tail;
     private int size;
 
     @Override
-    public void add(Object value) {
+    public void add(T value) {
         add(value, size);
     }
 
     @Override
-    public void add(Object value, int index) {
+    public void add(T value, int index) {
         checkIndexOutOfBoundsWithSize(index, size);
 
-        Node newNode = new Node(value);
+        Node<T> newNode = new Node(value);
         if (size == 0) {
             head = tail = newNode;
         } else if (index == size) {
@@ -30,7 +30,7 @@ public class LinkedList implements List, Iterable {
             newNode.next = head;
             head = newNode;
         } else {
-            Node prev = getNode(index - 1);
+            Node<T> prev = getNode(index - 1);
             newNode.next = prev.next;
             prev.next = newNode;
         }
@@ -38,12 +38,12 @@ public class LinkedList implements List, Iterable {
     }
 
     @Override
-    public Object remove(int index) {
+    public T remove(int index) {
         checkIndexOutOfBoundsWithSizeMinusOne(index, size);
         checkIsEmptyThenThrowException();
-        Node currentNode = head;
-        Node nextNode = head.next;
-        Node prevNode = null;
+        Node<T> currentNode = head;
+        Node<T> nextNode = head.next;
+        Node<T> prevNode = null;
 
         while (currentNode != null) {
             if (index == 0) {
@@ -59,9 +59,9 @@ public class LinkedList implements List, Iterable {
                 size--;
                 return currentNode.value;
             }
-            if (index == size-1) {
-                Node deleted = getNode(size-1);
-                prevNode = getNode(size-2);
+            if (index == size - 1) {
+                Node<T> deleted = getNode(size - 1);
+                prevNode = getNode(size - 2);
                 prevNode.next = null;
                 tail = prevNode;
                 size--;
@@ -80,18 +80,18 @@ public class LinkedList implements List, Iterable {
     }
 
 
-    private Node getNode(int index) {
+    private Node<T> getNode(int index) {
         checkIndexOutOfBoundsWithSizeMinusOne(index, size);
 
-        Node currentFromHead = head;
-        Node currentFromTail = tail;
+        Node<T> currentFromHead = head;
+        Node<T> currentFromTail = tail;
         if (index <= size / 2) {
             for (int i = 0; i < index; i++) {
                 currentFromHead = currentFromHead.next;
             }
             return currentFromHead;
         } else {
-            for (int i = size-1; i > index; i--) {
+            for (int i = size - 1; i > index; i--) {
                 currentFromTail = currentFromTail.prev;
 
             }
@@ -100,26 +100,26 @@ public class LinkedList implements List, Iterable {
     }
 
     @Override
-    public Object get(int index) {
-        checkIndexOutOfBoundsWithSize(index,size);
+    public T get(int index) {
+        checkIndexOutOfBoundsWithSize(index, size);
 
         return getNode(index).value;
     }
 
     @Override
-    public Object set(Object value, int index) {
-        checkIndexOutOfBoundsWithSize(index,size);
+    public T set(T value, int index) {
+        checkIndexOutOfBoundsWithSize(index, size);
 
-        Node newNode =getNode(index);
-        Node oldNode = newNode;
+        Node<T> newNode = getNode(index);
+        Node<T> oldNode = newNode;
         newNode.value = value;
         return oldNode.value;
     }
 
     @Override
     public void clear() {
-        head=tail=null;
-        size=0;
+        head = tail = null;
+        size = 0;
     }
 
     @Override
@@ -129,17 +129,16 @@ public class LinkedList implements List, Iterable {
 
     @Override
     public boolean isEmpty() {
-        return size==0;
+        return size == 0;
     }
 
 
-
     @Override
-    public int indexOf(Object value) {
+    public int indexOf(T value) {
         checkIsEmptyThenThrowException();
-        Node current = head;
-        for (int i = 0; i < size-1; i++) {
-            if(Objects.equals(current.value, value)){
+        Node<T> current = head;
+        for (int i = 0; i < size - 1; i++) {
+            if (Objects.equals(current.value, value)) {
                 return i;
             }
             current = current.next;
@@ -148,14 +147,14 @@ public class LinkedList implements List, Iterable {
     }
 
     @Override
-    public int lastIndexOf(Object value) {
+    public int lastIndexOf(T value) {
         checkIsEmptyThenThrowException();
-        Node current = tail;
-        for (int i = size-1; i >=0; i++) {
-            if(Objects.equals(current.value, value)){
+        Node<T> current = tail;
+        for (int i = size - 1; i >= 0; i++) {
+            if (Objects.equals(current.value, value)) {
                 return i;
             }
-            if(current==head){
+            if (current == head) {
                 break;
             }
             current = current.prev;
@@ -168,7 +167,7 @@ public class LinkedList implements List, Iterable {
         Iterator iterator = iterator();
         StringBuilder result = new StringBuilder();
         result.append("[");
-        while (iterator.hasNext()){
+        while (iterator.hasNext()) {
             result.append(iterator.next() + ", ");
         }
         result.append("]");
@@ -182,7 +181,8 @@ public class LinkedList implements List, Iterable {
     }
 
     private class LinkedListIterator implements Iterator {
-        private int index=0;
+        private int index = 0;
+
         @Override
         public boolean hasNext() {
             return index < size;
@@ -190,19 +190,19 @@ public class LinkedList implements List, Iterable {
 
         @Override
         public Object next() {
-            Node current = getNode(index);
-            Object value = current.value;
+            Node<T> current = getNode(index);
+            T value = current.value;
             index++;
             return value;
         }
     }
 
-    private class Node {
-        Node next;
-        Node prev;
-        Object value;
+    private class Node<T> {
+        Node<T> next;
+        Node<T> prev;
+        T value;
 
-        public Node(Object value) {
+        public Node(T value) {
             this.value = value;
         }
     }

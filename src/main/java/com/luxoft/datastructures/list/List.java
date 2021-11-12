@@ -2,16 +2,16 @@ package com.luxoft.datastructures.list;
 
 import java.util.Iterator;
 
-public interface List {
-    void add(Object value);
+public interface List<T> {
+    void add(T value);
 
-    void add(Object value, int index);
+    void add(T value, int index);
 
-    Object remove(int index);
+    T remove(int index);
 
-    Object get(int index);
+    T get(int index);
 
-    Object set(Object value, int index);
+    T set(T value, int index);
 
     void clear();
 
@@ -19,13 +19,14 @@ public interface List {
 
     boolean isEmpty();
 
-    default boolean contains(Object value) {
+    default boolean contains(T value) {
         return indexOf(value) >= 0;
     }
 
-    int indexOf(Object value);
+    int indexOf(T value);
 
-    int lastIndexOf(Object value);
+    int lastIndexOf(T value);
+
 
     default void checkIndexOutOfBoundsWithSizeMinusOne(int index, int size) {
 

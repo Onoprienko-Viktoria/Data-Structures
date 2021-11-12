@@ -64,7 +64,7 @@ public class ArrayQueue implements Queue {
     @Override
     public boolean contains(Object value) {
         for (int i = 0; i < size; i++) {
-            if (Objects.equals(value,array[i])) {
+            if (Objects.equals(value, array[i])) {
                 return true;
             }
         }
