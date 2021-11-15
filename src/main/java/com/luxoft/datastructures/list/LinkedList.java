@@ -2,9 +2,10 @@ package com.luxoft.datastructures.list;
 
 import java.util.Iterator;
 import java.util.Objects;
+import java.util.StringJoiner;
 
 
-public class LinkedList<T> implements List<T>, Iterable {
+public class LinkedList<T> implements List<T> {
     private Node<T> head;
     private Node<T> tail;
     private int size;
@@ -18,7 +19,7 @@ public class LinkedList<T> implements List<T>, Iterable {
     public void add(T value, int index) {
         checkIndexOutOfBoundsWithSize(index, size);
 
-        Node<T> newNode = new Node(value);
+        Node<T> newNode = new Node<>(value);
         if (size == 0) {
             head = tail = newNode;
         } else if (index == size) {
@@ -111,9 +112,8 @@ public class LinkedList<T> implements List<T>, Iterable {
         checkIndexOutOfBoundsWithSize(index, size);
 
         Node<T> newNode = getNode(index);
-        Node<T> oldNode = newNode;
         newNode.value = value;
-        return oldNode.value;
+        return newNode.value;
     }
 
     @Override
@@ -150,7 +150,7 @@ public class LinkedList<T> implements List<T>, Iterable {
     public int lastIndexOf(T value) {
         checkIsEmptyThenThrowException();
         Node<T> current = tail;
-        for (int i = size - 1; i >= 0; i++) {
+        for (int i = size - 1; i >= 0; i--) {
             if (Objects.equals(current.value, value)) {
                 return i;
             }
@@ -164,24 +164,22 @@ public class LinkedList<T> implements List<T>, Iterable {
 
     @Override
     public String toString() {
-        Iterator iterator = iterator();
-        StringBuilder result = new StringBuilder();
-        result.append("[");
+        Iterator<T> iterator = iterator();
+        StringJoiner result = new StringJoiner(", ", "[", "]");
         while (iterator.hasNext()) {
-            result.append(iterator.next() + ", ");
+            result.add(iterator.next() + "");
         }
-        result.append("]");
-
         return result.toString();
     }
 
     @Override
-    public Iterator iterator() {
+    public Iterator<T> iterator() {
         return new LinkedListIterator();
     }
 
-    private class LinkedListIterator implements Iterator {
+    public class LinkedListIterator implements Iterator<T> {
         private int index = 0;
+        private boolean canRemove;
 
         @Override
         public boolean hasNext() {
@@ -189,15 +187,28 @@ public class LinkedList<T> implements List<T>, Iterable {
         }
 
         @Override
-        public Object next() {
+        public T next() {
             Node<T> current = getNode(index);
             T value = current.value;
             index++;
+            canRemove = true;
             return value;
+        }
+
+        @Override
+        public void remove() {
+            if (canRemove) {
+                LinkedList.this.remove(index - 1);
+            } else {
+                throw new IllegalStateException("Already removed!");
+            }
+            index--;
+            canRemove = false;
         }
     }
 
-    private class Node<T> {
+
+    private static class Node<T> {
         Node<T> next;
         Node<T> prev;
         T value;

@@ -2,7 +2,7 @@ package com.luxoft.datastructures.list;
 
 import java.util.Iterator;
 
-public interface List<T> {
+public interface List<T> extends Iterable<T> {
     void add(T value);
 
     void add(T value, int index);
@@ -27,6 +27,10 @@ public interface List<T> {
 
     int lastIndexOf(T value);
 
+    @Override
+    Iterator<T> iterator();
+
+    String toString();
 
     default void checkIndexOutOfBoundsWithSizeMinusOne(int index, int size) {
 
@@ -47,8 +51,6 @@ public interface List<T> {
             throw new IllegalStateException("List is empty!");
         }
     }
-
-    String toString();
 }
 
 

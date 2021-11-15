@@ -2,20 +2,23 @@ package com.luxoft.datastructures.list;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import java.util.Iterator;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public abstract class AbstractListTest {
-    private List list;
+    private List<Object> list;
 
     @BeforeEach
     public void before() {
         list = getList();
     }
 
-    protected abstract List getList();
+    protected abstract List<Object> getList();
 
 
     @Test
@@ -178,55 +181,72 @@ public abstract class AbstractListTest {
         list.add("R");
         list.add("O");
 
-        assertEquals(null, list.get(1));
+        assertNull(list.get(1));
         list.set(null, 2);
-        assertEquals(null, list.get(2));
+        assertNull(list.get(2));
     }
 
-
+    @DisplayName("Test Iterator work correctly and throw Illegal State Exception if try call remove() twice for one element")
     @Test
-    public void testIndexOutOfBoundsExceptionOnGetAndSetAndAddAndRemove() {
+    public void testIterator() {
+        list.add("A");
+        list.add("B");
+        list.add("C");
+        Iterator<Object> iterator = list.iterator();
+        assertTrue(iterator.hasNext());
+        assertEquals("A", iterator.next());
+        assertTrue(iterator.hasNext());
+        assertEquals("B", iterator.next());
+        iterator.remove();
+        assertEquals("C", iterator.next());
+        iterator.remove();
+        assertEquals(1, list.size());
+        IllegalStateException exception = assertThrows(IllegalStateException.class, iterator::remove);
+        Assertions.assertEquals("Already removed!", exception.getMessage());
 
-        list.add("A");
-        list.add("A");
-        list.add("A");
 
-        Assertions.assertThrows(IndexOutOfBoundsException.class, () -> {
-            list.get(3);
-        });
-        Assertions.assertThrows(IndexOutOfBoundsException.class, () -> {
-            list.set("S", -2);
-        });
-        Assertions.assertThrows(IndexOutOfBoundsException.class, () -> {
-            list.add("S", 4);
-        });
-        Assertions.assertThrows(IndexOutOfBoundsException.class, () -> {
-            list.remove(-1);
-        });
     }
 
+    @DisplayName("Test IndexOutOfBoundsException throws if try to call the 'Get', 'Set', 'Add' or 'Remove' methods with index over size or less than zero")
     @Test
-    public void testIllegalStateExceptionOnLastIndexOfAndIndexOf() {
+    public void testIndexOutOfBoundsExceptionOn() {
 
-        Assertions.assertThrows(IllegalStateException.class, () -> {
-            list.indexOf(0);
-        });
-        Assertions.assertThrows(IllegalStateException.class, () -> {
-            list.lastIndexOf(0);
-        });
+        list.add("A");
+        list.add("A");
+        list.add("A");
+
+        IndexOutOfBoundsException exceptionGet = assertThrows(IndexOutOfBoundsException.class, () -> list.get(3));
+        Assertions.assertEquals("Index out of List", exceptionGet.getMessage());
+
+        IndexOutOfBoundsException exceptionSet = assertThrows(IndexOutOfBoundsException.class, () -> list.set("S", -2));
+        Assertions.assertEquals("Index out of List", exceptionSet.getMessage());
+
+        IndexOutOfBoundsException exceptionAdd = assertThrows(IndexOutOfBoundsException.class, () -> list.add("S", 4));
+        Assertions.assertEquals("Index out of List", exceptionAdd.getMessage());
+
+        IndexOutOfBoundsException exceptionRemove = assertThrows(IndexOutOfBoundsException.class, () -> list.remove(-1));
+        Assertions.assertEquals("Index out of List", exceptionRemove.getMessage());
+    }
+
+    @DisplayName("Test IllegalStateException throws if try to call the 'Last index of' and 'Index of' methods on an empty list")
+    @Test
+    public void testIllegalStateException() {
+
+        IllegalStateException exceptionIndexOf = assertThrows(IllegalStateException.class, () -> list.indexOf("A"));
+        Assertions.assertEquals("List is empty!", exceptionIndexOf.getMessage());
+        IllegalStateException exceptionLastIndexOf = assertThrows(IllegalStateException.class, () -> list.lastIndexOf("B"));
+        Assertions.assertEquals("List is empty!", exceptionLastIndexOf.getMessage());
     }
 
 
     @Test
     public void testToString() {
-
         list.add("A");
         list.add("A");
         list.add("A");
         String received = list.toString();
 
-        assertEquals("[A, A, A, ]", received);
+        assertEquals("[A, A, A]", received);
     }
-
 
 }

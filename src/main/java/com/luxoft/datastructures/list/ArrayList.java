@@ -2,11 +2,11 @@ package com.luxoft.datastructures.list;
 
 import java.util.Iterator;
 import java.util.Objects;
+import java.util.StringJoiner;
 
-public class ArrayList<T> implements List<T>, Iterable {
+public class ArrayList<T> implements List<T> {
     private static final int DEFAULT_INITIAL_CAPACITY = 10;
     private int size;
-    private int index = 0;
     private T[] array;
 
     public ArrayList() {
@@ -16,7 +16,6 @@ public class ArrayList<T> implements List<T>, Iterable {
     public ArrayList(int initialCapacity) {
         array = (T[]) new Object[initialCapacity];
     }
-
 
     @Override
     public void add(T value) {
@@ -34,9 +33,8 @@ public class ArrayList<T> implements List<T>, Iterable {
             cloneArray[count++] = (T) iterator.next();
         }
         array[index] = value;
-        for (int i = index + 1; i < array.length; i++) {
-            array[i] = cloneArray[i - 1];
-        }
+        if (array.length - (index + 1) >= 0)
+            System.arraycopy(cloneArray, index, array, index + 1, array.length - (index + 1));
         size++;
     }
 
@@ -73,11 +71,7 @@ public class ArrayList<T> implements List<T>, Iterable {
 
     @Override
     public void clear() {
-        for (T arrayObject : array) {
-            arrayObject = null;
-        }
         size = 0;
-
     }
 
     @Override
@@ -117,37 +111,31 @@ public class ArrayList<T> implements List<T>, Iterable {
 
     @Override
     public String toString() {
-        Iterator iterator = iterator();
-        StringBuilder result = new StringBuilder();
-        result.append("[");
+        Iterator<T> iterator = iterator();
+        StringJoiner result = new StringJoiner(", ", "[", "]");
         while (iterator.hasNext()) {
-            result.append(iterator.next());
-            result.append(", ");
+            result.add(iterator.next() + "");
         }
-
-        result.append("]");
-
         return result.toString();
     }
 
     private void ensureCapacity() {
         if (array.length == size) {
             T[] newArray = (T[]) new Object[(int) (array.length * 1.5)];
-            for (int i = 0; i < array.length; i++) {
-                newArray[i] = array[i];
-            }
+            System.arraycopy(array, 0, newArray, 0, array.length);
             array = newArray;
         }
     }
 
     @Override
-    public Iterator iterator() {
-        return new ListIterator();
+    public Iterator<T> iterator() {
+        return new ArrayListIterator();
     }
 
 
-    private class ListIterator implements Iterator {
+    private class ArrayListIterator implements Iterator<T> {
         private int index = 0;
+        boolean canRemove;
 
         @Override
         public boolean hasNext() {
@@ -158,8 +146,19 @@ public class ArrayList<T> implements List<T>, Iterable {
         public T next() {
             T value = array[index];
             index++;
+            canRemove = true;
             return value;
         }
-    }
 
+        @Override
+        public void remove() {
+            if (canRemove) {
+                ArrayList.this.remove(index - 1);
+            } else {
+                throw new IllegalStateException("Already removed!");
+            }
+            canRemove = false;
+            index--;
+        }
+    }
 }
