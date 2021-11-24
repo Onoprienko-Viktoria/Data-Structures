@@ -17,7 +17,7 @@ public class LinkedList<T> implements List<T> {
 
     @Override
     public void add(T value, int index) {
-        checkIndexOutOfBoundsWithSize(index, size);
+        validateIndexExistForMethodAdd(index, size);
 
         Node<T> newNode = new Node<>(value);
         if (size == 0) {
@@ -31,67 +31,67 @@ public class LinkedList<T> implements List<T> {
             newNode.next = head;
             head = newNode;
         } else {
-            Node<T> prev = getNode(index - 1);
-            newNode.next = prev.next;
-            prev.next = newNode;
+            Node<T> current = getNode(index);
+            newNode.next = current;
+            newNode.prev = current.prev;
+            current.prev.next = newNode;
         }
         size++;
     }
 
     @Override
     public T remove(int index) {
-        checkIndexOutOfBoundsWithSizeMinusOne(index, size);
-        checkIsEmptyThenThrowException();
-        Node<T> currentNode = head;
-        Node<T> nextNode = head.next;
-        Node<T> prevNode = null;
+        validateIndexExist(index, size);
 
-        while (currentNode != null) {
-            if (index == 0) {
-                if (prevNode == null) {
-                    head = nextNode;
-                    size--;
-                    return currentNode.value;
-                }
-                prevNode.next = nextNode;
-                if (nextNode != null) {
-                    nextNode.prev = prevNode;
-                }
-                size--;
-                return currentNode.value;
-            }
-            if (index == size - 1) {
-                Node<T> deleted = getNode(size - 1);
-                prevNode = getNode(size - 2);
-                prevNode.next = null;
-                tail = prevNode;
-                size--;
-                return deleted.value;
-            }
-            if (size == 1) {
-                head = tail = null;
-            }
-            prevNode = currentNode;
-            currentNode = currentNode.next;
-            nextNode = currentNode.next;
-            index--;
+        Node<T> removedValue = getNode(index);
+        Node<T> currentNode = removedValue;
+        Node<T> nextNode = removedValue.next;
+        Node<T> prevNode = removedValue.prev;
+
+        if (index == 0) {
+            head = nextNode;
+        } else if (index == size - 1) {
+            tail = tail.prev;
+            prevNode.next = null;
+        } else if (size == 1) {
+            head = tail = null;
+        } else {
+            prevNode.next = nextNode;
+            nextNode.prev = prevNode;
         }
         size--;
-        return null;
+        return removedValue.value;
     }
 
+    public T remove(Node<T> removedValue) {
+
+        Node<T> currentNode = removedValue;
+        Node<T> nextNode = removedValue.next;
+        Node<T> prevNode = removedValue.prev;
+
+        if (Objects.equals(currentNode, head)) {
+            head = nextNode;
+        } else if (Objects.equals(currentNode.next, null) && Objects.equals(currentNode.prev, null)) {
+            head = tail = null;
+        } else {
+            prevNode.next = nextNode;
+            nextNode.prev = prevNode;
+        }
+        size--;
+        return removedValue.value;
+    }
 
     private Node<T> getNode(int index) {
-        checkIndexOutOfBoundsWithSizeMinusOne(index, size);
+        validateIndexExist(index, size);
 
-        Node<T> currentFromHead = head;
-        Node<T> currentFromTail = tail;
         if (index <= size / 2) {
+            Node<T> currentFromHead = head;
             for (int i = 0; i < index; i++) {
                 currentFromHead = currentFromHead.next;
             }
             return currentFromHead;
         } else {
+            Node<T> currentFromTail = tail;
             for (int i = size - 1; i > index; i--) {
                 currentFromTail = currentFromTail.prev;
 
@@ -102,18 +102,19 @@ public class LinkedList<T> implements List<T> {
 
     @Override
     public T get(int index) {
-        checkIndexOutOfBoundsWithSize(index, size);
+        validateIndexExist(index, size);
 
         return getNode(index).value;
     }
 
     @Override
     public T set(T value, int index) {
-        checkIndexOutOfBoundsWithSize(index, size);
+        validateIndexExist(index, size);
 
         Node<T> newNode = getNode(index);
+        Object oldValue = newNode.value;
         newNode.value = value;
-        return newNode.value;
+        return (T) oldValue;
     }
 
     @Override
@@ -135,7 +136,7 @@ public class LinkedList<T> implements List<T> {
 
     @Override
     public int indexOf(T value) {
-        checkIsEmptyThenThrowException();
+
         Node<T> current = head;
         for (int i = 0; i < size - 1; i++) {
             if (Objects.equals(current.value, value)) {
@@ -148,14 +149,11 @@ public class LinkedList<T> implements List<T> {
 
     @Override
     public int lastIndexOf(T value) {
-        checkIsEmptyThenThrowException();
+
         Node<T> current = tail;
         for (int i = size - 1; i >= 0; i--) {
             if (Objects.equals(current.value, value)) {
                 return i;
-            }
-            if (current == head) {
-                break;
             }
             current = current.prev;
         }
@@ -164,10 +162,9 @@ public class LinkedList<T> implements List<T> {
 
     @Override
     public String toString() {
-        Iterator<T> iterator = iterator();
         StringJoiner result = new StringJoiner(", ", "[", "]");
-        while (iterator.hasNext()) {
-            result.add(iterator.next() + "");
+        for (T value : this) {
+            result.add(String.valueOf(value));
         }
         return result.toString();
     }
@@ -178,32 +175,38 @@ public class LinkedList<T> implements List<T> {
     }
 
     public class LinkedListIterator implements Iterator<T> {
+        private Node<T> current = head;
         private int index = 0;
         private boolean canRemove;
 
         @Override
         public boolean hasNext() {
-            return index < size;
+            return (index < size);
         }
 
         @Override
         public T next() {
-            Node<T> current = getNode(index);
             T value = current.value;
-            index++;
+            current = current.next;
             canRemove = true;
+            index++;
             return value;
         }
 
         @Override
         public void remove() {
-            if (canRemove) {
-                LinkedList.this.remove(index - 1);
-            } else {
+            if (!canRemove) {
                 throw new IllegalStateException("Already removed!");
             }
+            if (current == null) {
+                tail = tail.prev;
+                size--;
+                canRemove = false;
+            } else {
+                LinkedList.this.remove(current.prev);
+                canRemove = false;
+            }
             index--;
-            canRemove = false;
         }
     }
 
@@ -217,5 +220,4 @@ public class LinkedList<T> implements List<T> {
             this.value = value;
         }
     }
-
 }

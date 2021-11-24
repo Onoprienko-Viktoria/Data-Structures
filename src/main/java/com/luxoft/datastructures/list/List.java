@@ -32,23 +32,17 @@ public interface List<T> extends Iterable<T> {
 
     String toString();
 
-    default void checkIndexOutOfBoundsWithSizeMinusOne(int index, int size) {
+    default void validateIndexExist(int index, int size) {
 
         if (index > size - 1 || index < 0) {
             throw new IndexOutOfBoundsException("Index out of List");
         }
     }
 
-    default void checkIndexOutOfBoundsWithSize(int index, int size) {
+    default void validateIndexExistForMethodAdd(int index, int size) {
 
         if (index > size || index < 0) {
             throw new IndexOutOfBoundsException("Index out of List");
-        }
-    }
-
-    default void checkIsEmptyThenThrowException() {
-        if (isEmpty()) {
-            throw new IllegalStateException("List is empty!");
         }
     }
 }

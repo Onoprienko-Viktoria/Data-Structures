@@ -34,7 +34,6 @@ public abstract class AbstractListTest {
         assertEquals("C", list.get(3));
         assertEquals("D", list.get(2));
         assertEquals("C", list.remove(3));
-        assertEquals("D", list.get(2));
         assertEquals(3, list.size());
     }
 
@@ -228,17 +227,6 @@ public abstract class AbstractListTest {
         Assertions.assertEquals("Index out of List", exceptionRemove.getMessage());
     }
 
-    @DisplayName("Test IllegalStateException throws if try to call the 'Last index of' and 'Index of' methods on an empty list")
-    @Test
-    public void testIllegalStateException() {
-
-        IllegalStateException exceptionIndexOf = assertThrows(IllegalStateException.class, () -> list.indexOf("A"));
-        Assertions.assertEquals("List is empty!", exceptionIndexOf.getMessage());
-        IllegalStateException exceptionLastIndexOf = assertThrows(IllegalStateException.class, () -> list.lastIndexOf("B"));
-        Assertions.assertEquals("List is empty!", exceptionLastIndexOf.getMessage());
-    }
-
-
     @Test
     public void testToString() {
         list.add("A");
@@ -248,5 +236,4 @@ public abstract class AbstractListTest {
 
         assertEquals("[A, A, A]", received);
     }
-
 }
