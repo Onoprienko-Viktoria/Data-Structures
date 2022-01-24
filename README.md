@@ -1,6 +1,6 @@
 # Data-structures
 Implementations of such data structures:
-- List
+- List:
     + ArrayList;
     + LinkedList;
 - Map: 
