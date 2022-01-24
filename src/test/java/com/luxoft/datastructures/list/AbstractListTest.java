@@ -206,26 +206,6 @@ public abstract class AbstractListTest {
 
     }
 
-    @DisplayName("Test IndexOutOfBoundsException throws if try to call the 'Get', 'Set', 'Add' or 'Remove' methods with index over size or less than zero")
-    @Test
-    public void testIndexOutOfBoundsExceptionOn() {
-
-        list.add("A");
-        list.add("A");
-        list.add("A");
-
-        IndexOutOfBoundsException exceptionGet = assertThrows(IndexOutOfBoundsException.class, () -> list.get(3));
-        Assertions.assertEquals("Index out of List", exceptionGet.getMessage());
-
-        IndexOutOfBoundsException exceptionSet = assertThrows(IndexOutOfBoundsException.class, () -> list.set("S", -2));
-        Assertions.assertEquals("Index out of List", exceptionSet.getMessage());
-
-        IndexOutOfBoundsException exceptionAdd = assertThrows(IndexOutOfBoundsException.class, () -> list.add("S", 4));
-        Assertions.assertEquals("Index out of List", exceptionAdd.getMessage());
-
-        IndexOutOfBoundsException exceptionRemove = assertThrows(IndexOutOfBoundsException.class, () -> list.remove(-1));
-        Assertions.assertEquals("Index out of List", exceptionRemove.getMessage());
-    }
 
     @Test
     public void testToString() {

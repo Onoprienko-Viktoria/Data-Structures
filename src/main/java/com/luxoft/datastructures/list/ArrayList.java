@@ -27,7 +27,6 @@ public class ArrayList<T> implements List<T> {
         Iterator iterator = iterator();
         int count = 0;
         ensureCapacity();
-        checkIndexOutOfBoundsWithSize(index, size);
         T[] cloneArray = (T[]) new Object[array.length];
         while (iterator.hasNext()) {
             cloneArray[count++] = (T) iterator.next();
@@ -40,7 +39,6 @@ public class ArrayList<T> implements List<T> {
 
     @Override
     public T remove(int index) {
-        checkIndexOutOfBoundsWithSizeMinusOne(index, size);
         T deletedValue = array[index];
         for (int i = index; i < size - 1; i++) {
             if (i == (size - 1)) {
@@ -57,13 +55,11 @@ public class ArrayList<T> implements List<T> {
 
     @Override
     public T get(int index) {
-        checkIndexOutOfBoundsWithSizeMinusOne(index, size);
         return array[index];
     }
 
     @Override
     public T set(T value, int index) {
-        checkIndexOutOfBoundsWithSizeMinusOne(index, size);
         T oldValue = array[index];
         array[index] = value;
         return oldValue;
@@ -87,8 +83,6 @@ public class ArrayList<T> implements List<T> {
 
     @Override
     public int indexOf(T value) {
-        checkIsEmptyThenThrowException();
-
         for (int i = 0; i < size - 1; i++) {
             if (Objects.equals(value, array[i])) {
                 return i;
@@ -99,8 +93,6 @@ public class ArrayList<T> implements List<T> {
 
     @Override
     public int lastIndexOf(T value) {
-        checkIsEmptyThenThrowException();
-
         for (int i = size - 1; i >= 0; i--) {
             if (Objects.equals(value, array[i])) {
                 return i;
